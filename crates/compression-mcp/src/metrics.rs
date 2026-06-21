@@ -131,7 +131,7 @@ impl MetricsCollector {
         };
 
         MetricsSnapshot {
-            total_saved,
+            total_tokens_saved: total_saved,
             compressions_count: count,
             errors_count: errors,
             average_accuracy: avg_accuracy,
