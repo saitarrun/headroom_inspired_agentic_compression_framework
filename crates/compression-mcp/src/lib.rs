@@ -8,6 +8,7 @@ pub mod hook_client;
 pub mod exporter;
 pub mod personalization;
 pub mod persistent_storage;
+pub mod integrated;
 
 pub use compressors::Compressor;
 pub use router::ContentRouter;
@@ -17,3 +18,4 @@ pub use hook_client::{HookClient, HookConfig};
 pub use exporter::MetricsExporter;
 pub use personalization::{PersonalizationManager, AgentProfile};
 pub use persistent_storage::PersistentStorageManager;
+pub use integrated::{IntegratedCompressionManager, IntegratedConfig, CompressionResult};
