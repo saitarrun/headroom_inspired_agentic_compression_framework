@@ -6,7 +6,6 @@
 
 use mcp_types::{CompressRequest, CompressResponse};
 use std::process::{Command, Stdio};
-use std::io::Write;
 use serde_json::json;
 
 /// Hook client for automatic compression
