@@ -93,7 +93,7 @@ headroom_workload_reduction_percent {{}} {:.2}
             }
         });
 
-        json.to_string_pretty().unwrap_or_default()
+        serde_json::to_string_pretty(&json).unwrap_or_default()
     }
 
     /// Export metrics in detailed analytics format (for reports)
@@ -110,7 +110,7 @@ headroom_workload_reduction_percent {{}} {:.2}
             r#"# Compression Metrics Report
 
 ## Summary
-- **Tokens Saved:** {:,}
+- **Tokens Saved:** {}
 - **Successful Compressions:** {}
 - **Compression Errors:** {}
 - **Success Rate:** {:.2}%

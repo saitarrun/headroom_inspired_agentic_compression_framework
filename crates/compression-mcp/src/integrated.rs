@@ -9,7 +9,7 @@
 /// This is the main interface users should use - it handles everything.
 
 use crate::{
-    ContentRouter, Compressor, CcrBackend, MetricsCollector,
+    ContentRouter, CcrBackend, MetricsCollector,
     PersonalizationManager, PersistentStorageManager,
     HookClient, HookConfig, MetricsExporter,
 };
@@ -423,7 +423,7 @@ mod tests {
         let manager = IntegratedCompressionManager::new(config).expect("create failed");
 
         let result = manager
-            .compress("agent-1", "shell", "x".repeat(100))
+            .compress("agent-1", "shell", &"x".repeat(100))
             .expect("compress failed");
 
         assert!(result.compressed);

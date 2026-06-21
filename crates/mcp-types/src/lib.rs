@@ -49,7 +49,7 @@ pub struct StatsResponse {
 }
 
 /// Content type for routing compression algorithms
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ContentType {
     Json,
     Code,
