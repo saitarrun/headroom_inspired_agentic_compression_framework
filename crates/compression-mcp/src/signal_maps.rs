@@ -4,8 +4,6 @@
 /// Signal = important data (results, errors, file info)
 /// Noise = metadata (timestamps, retry counts, duration)
 
-use std::collections::HashSet;
-
 /// Signal map for shell command outputs.
 pub struct ShellSignalMap;
 
