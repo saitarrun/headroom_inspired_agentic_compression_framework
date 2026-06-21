@@ -16,7 +16,7 @@ impl ContentRouter {
 
         compressors.insert(ContentType::Json, Arc::new(SmartCrusher) as Arc<dyn Compressor>);
         compressors.insert(ContentType::Code, Arc::new(CodeCompressor) as Arc<dyn Compressor>);
-        compressors.insert(ContentType::Text, Arc::new(KompressBase { _model_path: None }) as Arc<dyn Compressor>);
+        compressors.insert(ContentType::Text, Arc::new(KompressBase::new()) as Arc<dyn Compressor>);
 
         Self { compressors }
     }
