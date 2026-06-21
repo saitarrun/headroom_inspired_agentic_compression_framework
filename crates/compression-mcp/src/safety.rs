@@ -8,8 +8,6 @@
 /// 4. Signal preservation: Error messages, function sigs, auth metadata never compressed
 /// 5. CCR coverage: Every compressed output has retrievable original
 
-use std::collections::HashSet;
-
 // Authentication-related keywords (never compress)
 const AUTH_KEYWORDS: &[&str] = &[
     "authorization",
