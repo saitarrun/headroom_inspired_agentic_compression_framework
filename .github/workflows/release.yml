@@ -101,8 +101,53 @@ jobs:
           path: target/${{ matrix.target }}/release/compression-mcp
           retention-days: 1
 
+  build-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        target: [x86_64-pc-windows-gnu, x86_64-pc-windows-msvc]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo index
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo build
+        uses: actions/cache@v4
+        with:
+          path: target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Create artifact name
+        id: artifact
+        shell: bash
+        run: echo "name=compression-mcp-${{ matrix.target }}" >> $GITHUB_OUTPUT
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.artifact.outputs.name }}
+          path: target/${{ matrix.target }}/release/compression-mcp.exe
+          retention-days: 1
+
   create-release:
-    needs: [build-macos, build-linux]
+    needs: [build-macos, build-linux, build-windows]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
@@ -117,8 +162,13 @@ jobs:
         run: |
           mkdir -p release
           for dir in artifacts/compression-mcp-*/; do
-            binary="$dir/compression-mcp"
-            if [ -f "$binary" ]; then
+            # Try .exe first (Windows), then without extension (Unix)
+            if [ -f "$dir/compression-mcp.exe" ]; then
+              binary="$dir/compression-mcp.exe"
+              target=$(basename "$dir" | sed 's/compression-mcp-//')
+              cp "$binary" "release/compression-mcp-$target.exe"
+            elif [ -f "$dir/compression-mcp" ]; then
+              binary="$dir/compression-mcp"
               target=$(basename "$dir" | sed 's/compression-mcp-//')
               cp "$binary" "release/compression-mcp-$target"
               chmod +x "release/compression-mcp-$target"

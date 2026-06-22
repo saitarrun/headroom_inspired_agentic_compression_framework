@@ -10,13 +10,23 @@ A production-ready **MCP server** for Claude Code that reduces agent token consu
 
 ### Install (Recommended)
 
+#### macOS & Linux
 ```bash
 curl -fsSL https://raw.githubusercontent.com/saitarrun/agentic_context_compression_framework/main/scripts/install.sh | bash
 ```
 
-Auto-detects OS/architecture, downloads the latest binary, verifies checksums, installs to `~/.local/bin/`, and configures Claude Code.
+#### Windows (PowerShell)
+```powershell
+powershell -ExecutionPolicy Bypass -Command `
+  "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/saitarrun/agentic_context_compression_framework/main/scripts/install.ps1' -OutFile 'install.ps1'; & '.\install.ps1'"
+```
 
-**Supported:** macOS 11+ (Intel & Apple Silicon), Linux glibc (x86_64 & arm64)
+Auto-detects OS/architecture, downloads the latest binary, verifies checksums, installs to appropriate location, and configures Claude Code.
+
+**Supported Platforms:**
+- ✅ macOS 11+ (Intel x86_64 & Apple Silicon arm64)
+- ✅ Linux glibc (x86_64 & arm64)
+- ✅ Windows 10+ (x86_64)
 
 ### Build from Source
 
@@ -28,13 +38,25 @@ cargo build --release
 
 ### Configure Claude Code
 
-Add to `~/.claude/settings.json` (or let the install script do it):
+The install script automatically configures this, or add manually:
 
+**macOS & Linux:** `~/.claude/settings.json`
 ```json
 {
   "mcpServers": {
     "headroom-compression": {
       "command": "~/.local/bin/compression-mcp"
+    }
+  }
+}
+```
+
+**Windows:** `%APPDATA%\.claude\settings.json`
+```json
+{
+  "mcpServers": {
+    "headroom-compression": {
+      "command": "C:\\Users\\YourUsername\\AppData\\Local\\bin\\compression-mcp.exe"
     }
   }
 }
